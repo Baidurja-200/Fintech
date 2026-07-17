@@ -1,0 +1,337 @@
+/* =====================================================
+   RAZORPAY PROFILE – INTERACTIVE JAVASCRIPT
+   Scroll effects, counters, interactive consoles, charts
+   ===================================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+  'use strict';
+
+  // ─── ELEMENTS ───
+  const navbar      = document.getElementById('navbar');
+  const navLinks    = document.getElementById('navLinks');
+  const navToggle   = document.getElementById('navToggle');
+  const backToTop   = document.getElementById('backToTop');
+  const sections    = document.querySelectorAll('section[id]');
+  const reveals     = document.querySelectorAll('.reveal');
+  const heroStats   = document.querySelectorAll('.hero-stat-value[data-count]');
+
+  // ─── NAVBAR – Sticky + Scroll Shadow ───
+  let lastScrollY = 0;
+
+  function handleNavbarScroll() {
+    const scrollY = window.scrollY;
+    navbar.classList.toggle('scrolled', scrollY > 50);
+    lastScrollY = scrollY;
+  }
+
+  // ─── ACTIVE NAV LINK HIGHLIGHTING ───
+  function highlightActiveLink() {
+    const scrollY = window.scrollY + 120;
+    let currentSection = '';
+
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      if (scrollY >= top && scrollY < top + height) {
+        currentSection = section.getAttribute('id');
+      }
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.classList.remove('active');
+      const href = link.getAttribute('href');
+      if (href && href.substring(1) === currentSection) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  // ─── MOBILE NAV TOGGLE ───
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      navToggle.classList.toggle('active');
+    });
+
+    // Close mobile nav on link click
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('active');
+      });
+    });
+  }
+
+  // ─── BACK TO TOP BUTTON ───
+  function handleBackToTop() {
+    if (backToTop) {
+      backToTop.classList.toggle('visible', window.scrollY > 500);
+    }
+  }
+
+  if (backToTop) {
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // ─── SCROLL REVEAL (Intersection Observer) ───
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.1,
+      rootMargin: '0px 0px -60px 0px'
+    }
+  );
+
+  reveals.forEach(el => revealObserver.observe(el));
+
+  // ─── ANIMATED COUNTERS ───
+  let countersAnimated = false;
+
+  function animateCounters() {
+    if (countersAnimated) return;
+
+    heroStats.forEach(stat => {
+      const target     = parseFloat(stat.dataset.count);
+      const prefix     = stat.dataset.prefix || '';
+      const suffix     = stat.dataset.suffix || '';
+      const decimals   = parseInt(stat.dataset.decimals) || 0;
+      const noComma    = stat.dataset.noComma === 'true';
+      const duration   = 2000;
+      const startTime  = performance.now();
+
+      function updateCounter(currentTime) {
+        const elapsed  = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased    = 1 - Math.pow(1 - progress, 3);
+        const current  = eased * target;
+
+        if (decimals > 0) {
+          stat.textContent = prefix + current.toFixed(decimals) + suffix;
+        } else {
+          const val = Math.floor(current);
+          stat.textContent = prefix + (noComma ? val : val.toLocaleString()) + suffix;
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          if (decimals > 0) {
+            stat.textContent = prefix + target.toFixed(decimals) + suffix;
+          } else {
+            stat.textContent = prefix + (noComma ? target : target.toLocaleString()) + suffix;
+          }
+        }
+      }
+
+      requestAnimationFrame(updateCounter);
+    });
+
+    countersAnimated = true;
+  }
+
+  const heroObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          heroObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  const heroSection = document.getElementById('hero');
+  if (heroSection) {
+    heroObserver.observe(heroSection);
+  }
+
+  // ─── KPI CARD HOVER TILT EFFECT ───
+  document.querySelectorAll('.kpi-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect   = card.getBoundingClientRect();
+      const x      = e.clientX - rect.left;
+      const y      = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -5;
+      const rotateY = ((x - centerX) / centerX) * 5;
+      card.style.transform = `translateY(-5px) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0)';
+    });
+  });
+
+  // ─── TIMELINE DOT GLOW ON SCROLL ───
+  const timelineDots = document.querySelectorAll('.timeline-dot');
+  const timelineObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.boxShadow = '0 0 10px rgba(11, 114, 231, 0.6)';
+          entry.target.style.transform = 'scale(1.25)';
+          entry.target.style.transition = 'all 0.4s ease';
+        }
+      });
+    },
+    { threshold: 0.5, rootMargin: '0px 0px -100px 0px' }
+  );
+
+  timelineDots.forEach(dot => timelineObserver.observe(dot));
+
+  // ─── INTERACTIVE GEOGRAPHY CONSOLE CONTROLLER ───
+  const geoTabBtns = document.querySelectorAll('.geo-tab-btn');
+  const mapNodes   = document.querySelectorAll('.map-node');
+  const detailsPanes = document.querySelectorAll('.hub-details-pane');
+
+  function switchActiveHub(hubId) {
+    // 1. Update Tabs
+    geoTabBtns.forEach(btn => {
+      const btnHub = btn.dataset.hub;
+      btn.classList.toggle('active', btnHub === hubId);
+    });
+
+    // 2. Update Map Nodes
+    mapNodes.forEach(node => {
+      const nodeHub = node.dataset.node;
+      node.classList.toggle('active', nodeHub === hubId);
+    });
+
+    // 3. Update Details Panes
+    detailsPanes.forEach(pane => {
+      const paneId = pane.getAttribute('id');
+      pane.classList.toggle('active', paneId === `hub-content-${hubId}`);
+    });
+
+    // 4. Update SVG Flight connection paths
+    const pathKl = document.getElementById('path-kl');
+    const pathSg = document.getElementById('path-sg');
+    const pathDe = document.getElementById('path-de');
+
+    if (pathKl && pathSg && pathDe) {
+      // Reset path colors and thickness
+      pathKl.style.stroke = 'rgba(11, 114, 231, 0.15)';
+      pathKl.style.strokeWidth = '2';
+      pathSg.style.stroke = 'rgba(11, 114, 231, 0.15)';
+      pathSg.style.strokeWidth = '2';
+      pathDe.style.stroke = 'rgba(11, 114, 231, 0.15)';
+      pathDe.style.strokeWidth = '2';
+
+      // Highlight active connection line
+      if (hubId === 'kuala-lumpur') {
+        pathKl.style.stroke = '#3B93FC';
+        pathKl.style.strokeWidth = '3.5';
+      } else if (hubId === 'singapore') {
+        pathSg.style.stroke = '#3B93FC';
+        pathSg.style.strokeWidth = '3.5';
+      } else if (hubId === 'delaware') {
+        pathDe.style.stroke = '#3B93FC';
+        pathDe.style.strokeWidth = '3.5';
+      }
+    }
+  }
+
+  // Bind clicks to Hub Buttons
+  geoTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const hubId = btn.dataset.hub;
+      switchActiveHub(hubId);
+    });
+  });
+
+  // Bind clicks to Map Nodes
+  mapNodes.forEach(node => {
+    node.addEventListener('click', () => {
+      const hubId = node.dataset.node;
+      switchActiveHub(hubId);
+    });
+  });
+
+  // Initialize active geography selection
+  switchActiveHub('bengaluru');
+
+  // ─── INTERACTIVE FUNDING CHART ROADMAP ───
+  const chartBars = document.querySelectorAll('.chart-bar');
+  const detailsDefault = document.querySelector('.funding-details-pane-default');
+  const detailsActive = document.querySelector('.funding-details-pane-active');
+
+  const detailsRoundTitle = document.querySelector('.details-round-title');
+  const detailsYear = document.querySelector('.details-year');
+  const detailsAmount = document.querySelector('.details-amount');
+  const detailsInvestors = document.querySelector('.details-investors');
+
+  chartBars.forEach(bar => {
+    bar.addEventListener('mouseenter', () => {
+      const round = bar.dataset.round;
+      const amount = bar.dataset.amount;
+      const year = bar.dataset.year;
+      const investors = bar.dataset.investors;
+
+      if (detailsRoundTitle) detailsRoundTitle.textContent = `${round} Round`;
+      if (detailsYear) detailsYear.textContent = year;
+      if (detailsAmount) detailsAmount.textContent = amount;
+      if (detailsInvestors) detailsInvestors.textContent = investors;
+
+      if (detailsDefault) detailsDefault.style.display = 'none';
+      if (detailsActive) detailsActive.style.display = 'block';
+    });
+
+    bar.addEventListener('mouseleave', () => {
+      if (detailsDefault) detailsDefault.style.display = 'block';
+      if (detailsActive) detailsActive.style.display = 'none';
+    });
+  });
+
+  // ─── SMOOTH SCROLL FOR NAV LINKS ───
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      const targetEl = document.querySelector(targetId);
+      if (targetEl) {
+        const offsetTop = targetEl.offsetTop - 80;
+        window.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // ─── THROTTLED SCROLL HANDLER ───
+  let ticking = false;
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        handleNavbarScroll();
+        highlightActiveLink();
+        handleBackToTop();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ─── INITIAL CALLS ───
+  handleNavbarScroll();
+  highlightActiveLink();
+  handleBackToTop();
+
+  window.addEventListener('load', () => {
+    document.body.classList.add('loaded');
+  });
+});
