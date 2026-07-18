@@ -409,10 +409,10 @@ function initializeProfilePage() {
 
   function resetVisuals() {
     Object.values(nodes).forEach(n => {
-      if (n) n.className = 'flow-node';
+      if (n) n.setAttribute('class', 'flow-node');
     });
     Object.values(lines).forEach(l => {
-      if (l) l.className = 'flow-line';
+      if (l) l.setAttribute('class', 'flow-line');
     });
     if (otpModal) otpModal.style.display = 'none';
     if (successOverlay) successOverlay.style.display = 'none';
