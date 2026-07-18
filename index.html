@@ -2,6 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>
+    (function() {
+      window.jsErrors = [];
+      window.onerror = function(message, source, lineno, colno, error) {
+        const errorMsg = `[ERROR] ${message} at ${source}:${lineno}:${colno}`;
+        window.jsErrors.push(errorMsg);
+        const logs = document.getElementById('flowLogs');
+        if (logs) {
+          const entry = document.createElement('div');
+          entry.style.color = '#ff4a4a';
+          entry.style.fontWeight = 'bold';
+          entry.className = 'log-entry';
+          entry.textContent = errorMsg;
+          logs.appendChild(entry);
+        }
+        return false;
+      };
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Razorpay — Company Profile | India's Leading Fintech Platform</title>
   <meta name="description" content="An in-depth profile of Razorpay, India's leading full-stack fintech platform. Explore its founding story, business model, growth trajectory, and impact on India's digital payments ecosystem.">
@@ -17,7 +36,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B72E7'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='central' font-family='Arial' font-weight='900' font-size='20' fill='white'%3ER%3C/text%3E%3C/svg%3E">
 
   <!-- Stylesheets with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=18.0">
+  <link rel="stylesheet" href="style.css?v=19.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
@@ -1452,6 +1471,6 @@
     <i class="fa-solid fa-arrow-up"></i>
   </button>
 
-  <script src="script.js?v=18.0"></script>
+  <script src="script.js?v=19.0"></script>
 </body>
 </html>

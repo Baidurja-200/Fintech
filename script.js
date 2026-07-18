@@ -3,7 +3,7 @@
    Scroll effects, counters, interactive consoles, charts
    ===================================================== */
 
-document.addEventListener('DOMContentLoaded', () => {
+function initializeProfilePage() {
   'use strict';
 
   // ─── ELEMENTS ───
@@ -346,6 +346,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnVerifyOtp = document.getElementById('btn-verify-otp');
   const btnResetSim = document.getElementById('btn-reset-sim');
   const otpInput = document.getElementById('otp-input');
+
+  // Dump early load errors to logs panel
+  if (logContainer && window.jsErrors && window.jsErrors.length > 0) {
+    window.jsErrors.forEach(err => {
+      const entry = document.createElement('div');
+      entry.style.color = '#ff4a4a';
+      entry.style.fontWeight = 'bold';
+      entry.className = 'log-entry';
+      entry.textContent = err;
+      logContainer.appendChild(entry);
+    });
+  }
   
   // Tab changing
   tabBtns.forEach(btn => {
@@ -629,4 +641,10 @@ document.addEventListener('DOMContentLoaded', () => {
       writeLog('[SYSTEM] Simulation terminal reset. Waiting for input...', 'info');
     });
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeProfilePage);
+} else {
+  initializeProfilePage();
+}
