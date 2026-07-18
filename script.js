@@ -318,7 +318,6 @@ function initializeProfilePage() {
         handleNavbarScroll();
         highlightActiveLink();
         handleBackToTop();
-        updateFlowLines();
         ticking = false;
       });
       ticking = true;
@@ -369,7 +368,6 @@ function initializeProfilePage() {
       btn.classList.add('active');
       document.getElementById(`panel-${method}`).classList.add('active');
       writeLog(`[SYSTEM] Switched payment method to ${method.toUpperCase()}.`, 'info');
-      setTimeout(updateFlowLines, 50);
     });
   });
 
@@ -417,7 +415,6 @@ function initializeProfilePage() {
     if (otpModal) otpModal.style.display = 'none';
     if (successOverlay) successOverlay.style.display = 'none';
     if (logContainer) logContainer.innerHTML = '';
-    updateFlowLines();
   }
 
   function setNodeState(nodeKey, state) {
@@ -433,41 +430,6 @@ function initializeProfilePage() {
       el.classList.add(state);
     }
   }
-
-  // Dynamic SVG path calculator
-  function updateFlowLines() {
-    const customer = document.querySelector('#node-customer .node-icon-box');
-    const rzp = document.querySelector('#node-rzp .node-icon-box');
-    const gw = document.querySelector('#node-gw .node-icon-box');
-    const bank = document.querySelector('#node-bank .node-icon-box');
-    const merchant = document.querySelector('#node-merchant .node-icon-box');
-    
-    const svg = document.querySelector('.flow-connections-svg');
-    if (!svg || !customer || !rzp || !gw || !bank || !merchant) return;
-    const svgRect = svg.getBoundingClientRect();
-    
-    function getCenter(el) {
-      const r = el.getBoundingClientRect();
-      return {
-        x: r.left - svgRect.left + r.width / 2,
-        y: r.top - svgRect.top + r.height / 2
-      };
-    }
-    
-    const p1 = getCenter(customer);
-    const p2 = getCenter(rzp);
-    const p3 = getCenter(gw);
-    const p4 = getCenter(bank);
-    const p5 = getCenter(merchant);
-    
-    lines.custRzp.setAttribute('d', `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y}`);
-    lines.rzpGw.setAttribute('d', `M ${p2.x} ${p2.y} L ${p3.x} ${p3.y}`);
-    lines.gwBank.setAttribute('d', `M ${p3.x} ${p3.y} L ${p4.x} ${p4.y}`);
-    lines.bankMerch.setAttribute('d', `M ${p4.x} ${p4.y} L ${p5.x} ${p5.y}`);
-  }
-
-  window.addEventListener('resize', updateFlowLines);
-  setTimeout(updateFlowLines, 800); // Wait for animations to settle
 
   let activeTimeoutIds = [];
   function runWithDelay(fn, delay) {

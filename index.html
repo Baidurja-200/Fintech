@@ -36,7 +36,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B72E7'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='central' font-family='Arial' font-weight='900' font-size='20' fill='white'%3ER%3C/text%3E%3C/svg%3E">
 
   <!-- Stylesheets with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=20.0">
+  <link rel="stylesheet" href="style.css?v=21.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
@@ -787,32 +787,32 @@
         <!-- Right Column: Flow Routing Visualizer -->
         <div class="flow-visualizer">
           <div class="flow-map">
-            <!-- Dynamic Connection Paths -->
-            <svg class="flow-connections-svg">
-              <path class="flow-line" id="line-customer-rzp" d="M 0 0 L 0 0" />
-              <path class="flow-line" id="line-rzp-gw" d="M 0 0 L 0 0" />
-              <path class="flow-line" id="line-gw-bank" d="M 0 0 L 0 0" />
-              <path class="flow-line" id="line-bank-merchant" d="M 0 0 L 0 0" />
-            </svg>
-
-            <!-- Interactive Nodes -->
+            <!-- Interactive Nodes and Connection Lines -->
             <div class="flow-nodes">
               <div class="flow-node" id="node-customer">
                 <div class="node-icon-box"><i class="fa-solid fa-cart-shopping"></i></div>
                 <span class="node-label">Checkout</span>
               </div>
+              <div class="flow-line" id="line-customer-rzp"></div>
+              
               <div class="flow-node" id="node-rzp">
                 <div class="node-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
                 <span class="node-label">Razorpay API</span>
               </div>
+              <div class="flow-line" id="line-rzp-gw"></div>
+              
               <div class="flow-node" id="node-gw">
                 <div class="node-icon-box"><i class="fa-solid fa-network-wired"></i></div>
                 <span class="node-label">Gateway</span>
               </div>
+              <div class="flow-line" id="line-gw-bank"></div>
+              
               <div class="flow-node" id="node-bank">
                 <div class="node-icon-box"><i class="fa-solid fa-building-columns"></i></div>
                 <span class="node-label">Acquirer</span>
               </div>
+              <div class="flow-line" id="line-bank-merchant"></div>
+              
               <div class="flow-node" id="node-merchant">
                 <div class="node-icon-box"><i class="fa-solid fa-wallet"></i></div>
                 <span class="node-label">Settled</span>
@@ -1471,6 +1471,6 @@
     <i class="fa-solid fa-arrow-up"></i>
   </button>
 
-  <script src="script.js?v=20.0"></script>
+  <script src="script.js?v=21.0"></script>
 </body>
 </html>

@@ -2653,39 +2653,42 @@ footer {
   letter-spacing: 0.05em;
 }
 
-/* SVG Connections Overlay */
-.flow-connections-svg {
+/* Connection Lines */
+.flow-line {
+  flex: 1;
+  height: 2px;
+  background: var(--border-subtle);
+  margin: 0 0.25rem;
+  position: relative;
+  overflow: hidden;
+  transition: background var(--transition-fast);
+}
+
+.flow-line::after {
+  content: '';
   position: absolute;
   top: 0;
-  left: 0;
+  left: -100%;
   width: 100%;
   height: 100%;
-  z-index: 1;
-  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--rz-blue), transparent);
 }
 
-.flow-line {
-  stroke: var(--border-subtle);
-  stroke-width: 2;
-  stroke-dasharray: 4;
-  fill: none;
-  transition: stroke var(--transition-fast);
-}
-
-.flow-line.active {
-  stroke: var(--rz-blue);
-  stroke-dashoffset: 20;
-  animation: dash 1s linear infinite;
+.flow-line.active::after {
+  animation: flowPulse 1.2s infinite linear;
 }
 
 .flow-line.success {
-  stroke: var(--accent-green);
+  background: var(--accent-green);
 }
 
-@keyframes dash {
-  to {
-    stroke-dashoffset: 0;
-  }
+.flow-line.success::after {
+  background: transparent;
+}
+
+@keyframes flowPulse {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
 /* Transaction Logs */
