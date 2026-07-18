@@ -1096,9 +1096,11 @@ section#geography.dark-bg .section-label {
 
 .geo-map-dots {
   position: relative;
-  width: 360px;
-  height: 280px;
-  background: radial-gradient(circle at 30% 65%, rgba(11, 114, 231, 0.15) 0%, transparent 70%);
+  width: 100%;
+  max-width: 680px;
+  aspect-ratio: 1010 / 666;
+  margin: 0 auto;
+  background: radial-gradient(circle at 70% 60%, rgba(11, 114, 231, 0.12) 0%, transparent 70%);
 }
 
 .dot-grid {
@@ -1107,6 +1109,34 @@ section#geography.dark-bg .section-label {
   background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
   background-size: 16px 16px;
   opacity: 0.8;
+  z-index: 0;
+}
+
+.geo-map-svg-holder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.geo-map-svg-holder svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.geo-map-svg-holder path {
+  fill: rgba(255, 255, 255, 0.04);
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 0.8px;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+[data-theme='light'] .geo-map-svg-holder path {
+  fill: rgba(7, 38, 84, 0.05);
+  stroke: rgba(7, 38, 84, 0.15);
 }
 
 /* Detailed country vector contours */
@@ -1115,11 +1145,8 @@ section#geography.dark-bg .section-label {
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
-}
-
-.geo-map-vector path {
-  transition: fill 0.3s ease, stroke 0.3s ease;
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* Node layout */
@@ -2294,9 +2321,10 @@ footer {
   }
   
   .geo-map-dots {
-    width: 280px;
-    height: 220px;
-    transform: scale(0.9);
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    transform: none;
   }
 
   .acq-domains-wrapper {

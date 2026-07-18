@@ -603,6 +603,28 @@ function initializeProfilePage() {
       writeLog('[SYSTEM] Simulation terminal reset. Waiting for input...', 'info');
     });
   }
+
+  // ─── DYNAMIC WORLD MAP SVG LOADER ───
+  const mapHolder = document.getElementById('geoMapSvgHolder');
+  if (mapHolder) {
+    fetch('world-map.svg')
+      .then(response => {
+        if (!response.ok) throw new Error('Network error loading map');
+        return response.text();
+      })
+      .then(data => {
+        mapHolder.innerHTML = data;
+        const svgElement = mapHolder.querySelector('svg');
+        if (svgElement) {
+          svgElement.removeAttribute('style');
+          svgElement.setAttribute('width', '100%');
+          svgElement.setAttribute('height', '100%');
+        }
+      })
+      .catch(err => {
+        console.error('Error loading world map:', err);
+      });
+  }
 }
 
 if (document.readyState === 'loading') {

@@ -33,10 +33,10 @@
   <meta property="og:type" content="website">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B72E7'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='central' font-family='Arial' font-weight='900' font-size='20' fill='white'%3ER%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="razorpay-glyph.svg">
 
   <!-- Stylesheets with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=21.0">
+  <link rel="stylesheet" href="style.css?v=22.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
@@ -879,56 +879,39 @@
               <!-- Grid Background representation -->
               <div class="dot-grid"></div>
               
-              <!-- Highly Refined Vector Map Overlay -->
-              <svg class="geo-map-vector" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                <!-- Grid Latitude/Longitude auxiliary lines -->
-                <line x1="0" y1="75" x2="400" y2="75" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2,8" />
-                <line x1="0" y1="150" x2="400" y2="150" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2,8" />
-                <line x1="0" y1="225" x2="400" y2="225" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2,8" />
-                <line x1="100" y1="0" x2="100" y2="300" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2,8" />
-                <line x1="200" y1="0" x2="200" y2="300" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2,8" />
-                <line x1="300" y1="0" x2="300" y2="300" stroke="rgba(255,255,255,0.03)" stroke-width="1" stroke-dasharray="2,8" />
+              <!-- Placeholder that holds the dynamically fetched world map -->
+              <div class="geo-map-svg-holder" id="geoMapSvgHolder"></div>
 
+              <!-- Static Vector Connections Overlay -->
+              <svg class="geo-map-vector" viewBox="0 0 1010 666" xmlns="http://www.w3.org/2000/svg">
                 <!-- Concentric Range rings around India HQ -->
-                <circle cx="122" cy="190" r="40" fill="none" stroke="rgba(11, 114, 231, 0.04)" stroke-width="1" />
-                <circle cx="122" cy="190" r="80" fill="none" stroke="rgba(11, 114, 231, 0.03)" stroke-width="1" stroke-dasharray="4,4" />
-                <circle cx="122" cy="190" r="130" fill="none" stroke="rgba(11, 114, 231, 0.02)" stroke-width="1" />
-
-                <!-- Detailed India Peninsula vector outline path -->
-                <path d="M123,105 L129,100 L131,104 L138,107 L140,113 L135,116 L139,122 L146,124 L154,124 L161,126 L164,133 L169,137 L176,134 L180,137 L185,138 L188,142 L180,147 L177,152 L171,150 L167,153 L167,161 L163,165 L159,161 L153,162 L149,157 L148,162 L143,167 L142,175 L136,183 L134,196 L131,208 L126,219 L122,223 L119,216 L118,206 L117,195 L112,185 L108,181 L105,172 L101,168 L98,167 L91,163 L82,160 L78,154 L75,145 L76,138 L84,134 L91,135 L98,131 L103,124 L107,117 L114,115 Z" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)" stroke-width="1.2"/>
-                <path d="M125,228 C128,228 132,234 130,237 C128,240 123,235 125,228 Z" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/> <!-- Sri Lanka -->
-                
-                <!-- Detailed Malaysia & Singapore Peninsula vector outline path -->
-                <path d="M185,200 L189,203 L193,212 L196,217 L198,224 L201,232 L204,239 L207,247 L211,253 L208,255 L204,250 L202,243 L201,236 L195,233 L192,226 L191,218 L188,211 L183,205 Z" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.18)" stroke-width="1.2"/>
-                <path d="M228,235 L236,238 L244,242 L254,244 L258,247 L253,251 L245,249 L238,246 L230,243 Z" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/> <!-- East Malaysia -->
-                <circle cx="212" cy="254" r="3.5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/> <!-- Singapore -->
-
-                <!-- Detailed US East Coast vector outline path -->
-                <path d="M312,45 L322,42 L329,48 L334,53 L336,61 L338,72 L340,84 L337,92 L332,97 L329,103 L326,110 L322,112 L320,105 L322,96 L325,87 L321,80 L318,71 L315,63 L312,52 Z" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" stroke-width="1.2"/>
+                <circle cx="702" cy="425" r="30" fill="none" stroke="rgba(11, 114, 231, 0.05)" stroke-width="1" />
+                <circle cx="702" cy="425" r="70" fill="none" stroke="rgba(11, 114, 231, 0.04)" stroke-width="1" stroke-dasharray="4,4" />
+                <circle cx="702" cy="425" r="120" fill="none" stroke="rgba(11, 114, 231, 0.03)" stroke-width="1" />
 
                 <!-- Connection Lines -->
-                <path id="path-kl" d="M122,190 Q 165,210 208,245" fill="none" stroke="rgba(11, 114, 231, 0.15)" stroke-width="2" stroke-dasharray="6,4" />
-                <path id="path-sg" d="M122,190 Q 168,215 212,254" fill="none" stroke="rgba(11, 114, 231, 0.15)" stroke-width="2" stroke-dasharray="6,4" />
-                <path id="path-de" d="M122,190 Q 230,120 338,82" fill="none" stroke="rgba(11, 114, 231, 0.15)" stroke-width="2" stroke-dasharray="6,4" />
+                <path id="path-kl" d="M 702 425 Q 730 440 761 451" fill="none" stroke="rgba(11, 114, 231, 0.15)" stroke-width="2" stroke-dasharray="6,4" />
+                <path id="path-sg" d="M 702 425 Q 735 445 767 459" fill="none" stroke="rgba(11, 114, 231, 0.15)" stroke-width="2" stroke-dasharray="6,4" />
+                <path id="path-de" d="M 702 425 Q 480 320 275 275" fill="none" stroke="rgba(11, 114, 231, 0.15)" stroke-width="2" stroke-dasharray="6,4" />
               </svg>
 
-              <!-- Node points positioned precisely relative to the map overlay -->
-              <div class="map-node node-blr active" data-node="bengaluru" style="top: 63%; left: 30.5%;">
+              <!-- Node points positioned precisely relative to the map overlay (1010x666 grid) -->
+              <div class="map-node node-blr active" data-node="bengaluru" style="top: 63.8%; left: 69.5%;">
                 <span class="pulse-ring"></span>
                 <span class="node-point"></span>
                 <span class="node-label">Bengaluru HQ</span>
               </div>
-              <div class="map-node node-kl" data-node="kuala-lumpur" style="top: 81.6%; left: 52%;">
+              <div class="map-node node-kl" data-node="kuala-lumpur" style="top: 67.7%; left: 75.4%;">
                 <span class="pulse-ring"></span>
                 <span class="node-point"></span>
                 <span class="node-label">Kuala Lumpur</span>
               </div>
-              <div class="map-node node-sg" data-node="singapore" style="top: 84.6%; left: 53%;">
+              <div class="map-node node-sg" data-node="singapore" style="top: 68.9%; left: 75.9%;">
                 <span class="pulse-ring"></span>
                 <span class="node-point"></span>
-                <span class="node-label">Singapore</span>
+                <span class="node-label">Singapore Hub</span>
               </div>
-              <div class="map-node node-de" data-node="delaware" style="top: 27.3%; left: 84.5%;">
+              <div class="map-node node-de" data-node="delaware" style="top: 41.3%; left: 27.2%;">
                 <span class="pulse-ring"></span>
                 <span class="node-point"></span>
                 <span class="node-label">Delaware (US)</span>
@@ -1471,6 +1454,6 @@
     <i class="fa-solid fa-arrow-up"></i>
   </button>
 
-  <script src="script.js?v=21.0"></script>
+  <script src="script.js?v=22.0"></script>
 </body>
 </html>
