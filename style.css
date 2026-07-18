@@ -1192,8 +1192,14 @@ section#geography.dark-bg .section-label {
   padding: 0.2rem 0.5rem;
   border-radius: var(--radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: var(--transition-base);
   box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+  
+  /* Hidden by default to prevent overlapping congestion */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.9);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Spacing adjustments for congested SEA region to prevent overlaps */
@@ -1217,20 +1223,35 @@ section#geography.dark-bg .section-label {
   margin-left: 8px;
 }
 
-/* Active node styles */
-.map-node.active .node-point {
+/* Active and Hovered node styles */
+.map-node.active {
+  z-index: 10; /* Bring active node label to the very front */
+}
+
+.map-node:hover {
+  z-index: 9; /* Hovered node label is placed above other inactive nodes */
+}
+
+.map-node.active .node-point,
+.map-node:hover .node-point {
   background: var(--rz-blue-light);
   box-shadow: 0 0 15px var(--rz-blue-light);
   transform: scale(1.3);
 }
 
-.map-node.active .pulse-ring {
+.map-node.active .pulse-ring,
+.map-node:hover .pulse-ring {
   opacity: 1;
   transform: scale(1.3);
   animation: ringPulse 2s infinite ease-out;
 }
 
-.map-node.active .node-label {
+.map-node.active .node-label,
+.map-node:hover .node-label {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: scale(1);
   color: #FFFFFF;
   border-color: var(--rz-blue-light);
   background: var(--rz-slate);
