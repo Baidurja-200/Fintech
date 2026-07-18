@@ -625,6 +625,18 @@ function initializeProfilePage() {
         console.error('Error loading world map:', err);
       });
   }
+
+  // Center geography map scroll container on India initially for mobile users
+  const schematicWrapper = document.querySelector('.geo-schematic-wrapper');
+  if (schematicWrapper) {
+    setTimeout(() => {
+      const scrollWidth = schematicWrapper.scrollWidth;
+      const clientWidth = schematicWrapper.clientWidth;
+      if (scrollWidth > clientWidth) {
+        schematicWrapper.scrollLeft = (scrollWidth - clientWidth) * 0.65;
+      }
+    }, 1000);
+  }
 }
 
 if (document.readyState === 'loading') {

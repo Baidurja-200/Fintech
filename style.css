@@ -2236,6 +2236,39 @@ footer {
     grid-template-columns: 1fr;
   }
 
+  .geo-schematic-wrapper {
+    min-height: auto;
+    padding: var(--space-md);
+    overflow-x: auto;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    /* Custom thin scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(11, 114, 231, 0.3) transparent;
+  }
+  
+  .geo-schematic-wrapper::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .geo-schematic-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .geo-schematic-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(11, 114, 231, 0.3);
+    border-radius: 2px;
+  }
+
+  .geo-map-dots {
+    width: 100%;
+    min-width: 580px; /* Keep map wide enough to prevent label overlap */
+    max-width: 680px;
+    height: auto;
+    transform: none;
+    flex-shrink: 0;
+  }
+
   .geo-details-wrapper {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     min-height: auto;
@@ -2336,17 +2369,7 @@ footer {
     font-size: 1.25rem;
   }
   
-  .geo-schematic-wrapper {
-    min-height: 280px;
-    padding: var(--space-sm);
-  }
-  
-  .geo-map-dots {
-    width: 100%;
-    max-width: 480px;
-    height: auto;
-    transform: none;
-  }
+
 
   .acq-domains-wrapper {
     grid-template-columns: 1fr;
