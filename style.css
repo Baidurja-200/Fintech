@@ -2421,7 +2421,8 @@ footer {
 
 /* Mock Checkout Widget */
 .checkout-widget {
-  background: #ffffff;
+  background: var(--bg-card);
+  color: var(--text-primary);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-lg);
@@ -2510,6 +2511,8 @@ footer {
   border-radius: var(--radius-sm);
   font-family: inherit;
   font-size: 0.9rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .form-input:focus {
@@ -2557,12 +2560,12 @@ footer {
   padding: 0.5rem;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  background: #fff;
+  background: var(--bg-secondary);
   cursor: pointer;
   text-align: center;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   transition: all var(--transition-fast);
 }
 
@@ -2730,20 +2733,22 @@ footer {
 }
 
 .otp-modal-content {
-  background: #fff;
+  background: var(--bg-card);
+  color: var(--text-primary);
   padding: var(--space-md);
   border-radius: var(--radius-md);
   width: 100%;
   max-width: 280px;
   text-align: center;
   box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-subtle);
 }
 
 .otp-modal-title {
   font-weight: 700;
   font-size: 0.95rem;
   margin-bottom: var(--space-xs);
-  color: var(--rz-brand-navy);
+  color: var(--text-primary);
 }
 
 .otp-modal-text {
@@ -2756,7 +2761,8 @@ footer {
 .success-overlay {
   position: absolute;
   inset: 0;
-  background: #ffffff;
+  background: var(--bg-card);
+  color: var(--text-primary);
   display: none;
   flex-direction: column;
   align-items: center;

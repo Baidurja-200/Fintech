@@ -318,6 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
         handleNavbarScroll();
         highlightActiveLink();
         handleBackToTop();
+        updateFlowLines();
         ticking = false;
       });
       ticking = true;
@@ -356,6 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('active');
       document.getElementById(`panel-${method}`).classList.add('active');
       writeLog(`[SYSTEM] Switched payment method to ${method.toUpperCase()}.`, 'info');
+      setTimeout(updateFlowLines, 50);
     });
   });
 
@@ -402,6 +404,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (otpModal) otpModal.style.display = 'none';
     if (successOverlay) successOverlay.style.display = 'none';
+    if (logContainer) logContainer.innerHTML = '';
+    updateFlowLines();
   }
 
   function setNodeState(nodeKey, state) {
