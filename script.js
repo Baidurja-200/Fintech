@@ -334,4 +334,295 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('load', () => {
     document.body.classList.add('loaded');
   });
+
+  // ─── INTERACTIVE SIMULATION LOGIC ───
+  const tabBtns = document.querySelectorAll('.checkout-tab-btn');
+  const panels = document.querySelectorAll('.checkout-panel');
+  const bankBtns = document.querySelectorAll('.nb-bank-btn');
+  const logContainer = document.getElementById('flowLogs');
+  const otpModal = document.getElementById('otpModal');
+  const successOverlay = document.getElementById('successOverlay');
+  const btnVerifyOtp = document.getElementById('btn-verify-otp');
+  const btnResetSim = document.getElementById('btn-reset-sim');
+  const otpInput = document.getElementById('otp-input');
+  
+  // Tab changing
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const method = btn.getAttribute('data-method');
+      tabBtns.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      
+      btn.classList.add('active');
+      document.getElementById(`panel-${method}`).classList.add('active');
+      writeLog(`[SYSTEM] Switched payment method to ${method.toUpperCase()}.`, 'info');
+    });
+  });
+
+  // Netbanking bank selection
+  bankBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      bankBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Log function
+  function writeLog(text, type = 'info') {
+    if (!logContainer) return;
+    const entry = document.createElement('div');
+    entry.className = `log-entry log-${type}`;
+    entry.textContent = `${new Date().toLocaleTimeString()} - ${text}`;
+    logContainer.appendChild(entry);
+    logContainer.scrollTop = logContainer.scrollHeight;
+  }
+
+  // Visual state management
+  const nodes = {
+    customer: document.getElementById('node-customer'),
+    rzp: document.getElementById('node-rzp'),
+    gw: document.getElementById('node-gw'),
+    bank: document.getElementById('node-bank'),
+    merchant: document.getElementById('node-merchant')
+  };
+
+  const lines = {
+    custRzp: document.getElementById('line-customer-rzp'),
+    rzpGw: document.getElementById('line-rzp-gw'),
+    gwBank: document.getElementById('line-gw-bank'),
+    bankMerch: document.getElementById('line-bank-merchant')
+  };
+
+  function resetVisuals() {
+    Object.values(nodes).forEach(n => {
+      if (n) n.className = 'flow-node';
+    });
+    Object.values(lines).forEach(l => {
+      if (l) l.className = 'flow-line';
+    });
+    if (otpModal) otpModal.style.display = 'none';
+    if (successOverlay) successOverlay.style.display = 'none';
+  }
+
+  function setNodeState(nodeKey, state) {
+    const el = nodes[nodeKey];
+    if (el) {
+      el.classList.add(state);
+    }
+  }
+
+  function setLineState(lineKey, state) {
+    const el = lines[lineKey];
+    if (el) {
+      el.classList.add(state);
+    }
+  }
+
+  // Dynamic SVG path calculator
+  function updateFlowLines() {
+    const customer = document.querySelector('#node-customer .node-icon-box');
+    const rzp = document.querySelector('#node-rzp .node-icon-box');
+    const gw = document.querySelector('#node-gw .node-icon-box');
+    const bank = document.querySelector('#node-bank .node-icon-box');
+    const merchant = document.querySelector('#node-merchant .node-icon-box');
+    
+    const svg = document.querySelector('.flow-connections-svg');
+    if (!svg || !customer || !rzp || !gw || !bank || !merchant) return;
+    const svgRect = svg.getBoundingClientRect();
+    
+    function getCenter(el) {
+      const r = el.getBoundingClientRect();
+      return {
+        x: r.left - svgRect.left + r.width / 2,
+        y: r.top - svgRect.top + r.height / 2
+      };
+    }
+    
+    const p1 = getCenter(customer);
+    const p2 = getCenter(rzp);
+    const p3 = getCenter(gw);
+    const p4 = getCenter(bank);
+    const p5 = getCenter(merchant);
+    
+    lines.custRzp.setAttribute('d', `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y}`);
+    lines.rzpGw.setAttribute('d', `M ${p2.x} ${p2.y} L ${p3.x} ${p3.y}`);
+    lines.gwBank.setAttribute('d', `M ${p3.x} ${p3.y} L ${p4.x} ${p4.y}`);
+    lines.bankMerch.setAttribute('d', `M ${p4.x} ${p4.y} L ${p5.x} ${p5.y}`);
+  }
+
+  window.addEventListener('resize', updateFlowLines);
+  setTimeout(updateFlowLines, 800); // Wait for animations to settle
+
+  let activeTimeoutIds = [];
+  function runWithDelay(fn, delay) {
+    const t = setTimeout(fn, delay);
+    activeTimeoutIds.push(t);
+  }
+
+  function clearSimulationTimeouts() {
+    activeTimeoutIds.forEach(clearTimeout);
+    activeTimeoutIds = [];
+  }
+
+  // CARD PAYMENT DEMO
+  const btnPayCard = document.getElementById('btn-pay-card');
+  if (btnPayCard) {
+    btnPayCard.addEventListener('click', () => {
+      clearSimulationTimeouts();
+      resetVisuals();
+      writeLog('[CARD] Initializing secure checkout payload...', 'info');
+      setNodeState('customer', 'active');
+      
+      runWithDelay(() => {
+        writeLog('[CARD] Initiating API handshake with Razorpay servers...', 'info');
+        setLineState('custRzp', 'active');
+        setNodeState('rzp', 'active');
+      }, 800);
+
+      runWithDelay(() => {
+        writeLog('[CARD] Encrypting card details and tokenizing card data...', 'info');
+      }, 1600);
+
+      runWithDelay(() => {
+        writeLog('[CARD] Dynamic routing check: Sending request to Visa/Mastercard network...', 'info');
+        setLineState('rzpGw', 'active');
+        setNodeState('gw', 'active');
+      }, 2400);
+
+      runWithDelay(() => {
+        writeLog('[CARD] 3D-Secure 2.0 verification requested. Waiting for user authorization...', 'warn');
+        if (otpModal) otpModal.style.display = 'flex';
+      }, 3400);
+    });
+  }
+
+  // OTP Verification
+  if (btnVerifyOtp) {
+    btnVerifyOtp.addEventListener('click', () => {
+      const code = otpInput ? otpInput.value : '482934';
+      writeLog(`[CARD] OTP code (${code}) submitted. Verifying auth token...`, 'info');
+      
+      if (otpModal) otpModal.style.display = 'none';
+
+      runWithDelay(() => {
+        writeLog('[CARD] OTP authorized! Sending request to Issuer bank for balance checks...', 'success');
+        setLineState('gwBank', 'active');
+        setNodeState('bank', 'active');
+      }, 800);
+
+      runWithDelay(() => {
+        writeLog('[CARD] Settlement: Transferring funds to Merchant holding ledger...', 'info');
+        setLineState('bankMerch', 'active');
+        setNodeState('merchant', 'active');
+      }, 1800);
+
+      runWithDelay(() => {
+        writeLog('[SUCCESS] Payment completed! Merchant dashboard updated.', 'success');
+        Object.keys(nodes).forEach(k => setNodeState(k, 'success'));
+        Object.keys(lines).forEach(k => setLineState(k, 'success'));
+        if (successOverlay) successOverlay.style.display = 'flex';
+      }, 2800);
+    });
+  }
+
+  // UPI DEMO
+  const btnPayUpi = document.getElementById('btn-pay-upi');
+  if (btnPayUpi) {
+    btnPayUpi.addEventListener('click', () => {
+      clearSimulationTimeouts();
+      resetVisuals();
+      const vpa = document.getElementById('upi-vpa') ? document.getElementById('upi-vpa').value : 'user@upi';
+      writeLog(`[UPI] Request sent to VPA address: ${vpa}`, 'info');
+      setNodeState('customer', 'active');
+      
+      runWithDelay(() => {
+        writeLog('[UPI] Resolving UPI address against NPCI lookup ledger...', 'info');
+        setLineState('custRzp', 'active');
+        setNodeState('rzp', 'active');
+      }, 800);
+
+      runWithDelay(() => {
+        writeLog('[UPI] Routing request directly to BHIM/UPI processing switch...', 'info');
+        setLineState('rzpGw', 'active');
+        setNodeState('gw', 'active');
+      }, 1600);
+
+      runWithDelay(() => {
+        writeLog('[UPI] NPCI: Pushing collect notification message to customer UPI app...', 'warn');
+      }, 2400);
+
+      runWithDelay(() => {
+        writeLog('[UPI] Customer authorized transaction in UPI App using PIN.', 'success');
+        setLineState('gwBank', 'active');
+        setNodeState('bank', 'active');
+      }, 3600);
+
+      runWithDelay(() => {
+        writeLog('[UPI] Settlement: Crediting merchant balance via Instant Settlements...', 'info');
+        setLineState('bankMerch', 'active');
+        setNodeState('merchant', 'active');
+      }, 4400);
+
+      runWithDelay(() => {
+        writeLog('[SUCCESS] UPI Payment completed! Merchant wallet loaded.', 'success');
+        Object.keys(nodes).forEach(k => setNodeState(k, 'success'));
+        Object.keys(lines).forEach(k => setLineState(k, 'success'));
+        if (successOverlay) successOverlay.style.display = 'flex';
+      }, 5400);
+    });
+  }
+
+  // NETBANKING DEMO
+  const btnPayNb = document.getElementById('btn-pay-nb');
+  if (btnPayNb) {
+    btnPayNb.addEventListener('click', () => {
+      clearSimulationTimeouts();
+      resetVisuals();
+      const activeNB = document.querySelector('.nb-bank-btn.active');
+      const bankName = activeNB ? activeNB.textContent : 'HDFC Bank';
+      
+      writeLog(`[NETBANKING] Redirecting to ${bankName} portal integration...`, 'info');
+      setNodeState('customer', 'active');
+      
+      runWithDelay(() => {
+        writeLog('[NETBANKING] Establishing tunnel with partner bank Netbanking API...', 'info');
+        setLineState('custRzp', 'active');
+        setNodeState('rzp', 'active');
+      }, 800);
+
+      runWithDelay(() => {
+        writeLog('[NETBANKING] Sending request payload to Acquiring bank console...', 'info');
+        setLineState('rzpGw', 'active');
+        setNodeState('gw', 'active');
+      }, 1600);
+
+      runWithDelay(() => {
+        writeLog(`[NETBANKING] Bank portal authorized. Debiting ${bankName} core savings ledger...`, 'success');
+        setLineState('gwBank', 'active');
+        setNodeState('bank', 'active');
+      }, 2600);
+
+      runWithDelay(() => {
+        writeLog('[NETBANKING] Reconciliation: Smart Collect verified bank reference number...', 'info');
+        setLineState('bankMerch', 'active');
+        setNodeState('merchant', 'active');
+      }, 3400);
+
+      runWithDelay(() => {
+        writeLog('[SUCCESS] Netbanking payment verified! Settlement processed.', 'success');
+        Object.keys(nodes).forEach(k => setNodeState(k, 'success'));
+        Object.keys(lines).forEach(k => setLineState(k, 'success'));
+        if (successOverlay) successOverlay.style.display = 'flex';
+      }, 4200);
+    });
+  }
+
+  // Reset
+  if (btnResetSim) {
+    btnResetSim.addEventListener('click', () => {
+      clearSimulationTimeouts();
+      resetVisuals();
+      writeLog('[SYSTEM] Simulation terminal reset. Waiting for input...', 'info');
+    });
+  }
 });

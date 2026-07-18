@@ -17,7 +17,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B72E7'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' dominant-baseline='central' font-family='Arial' font-weight='900' font-size='20' fill='white'%3ER%3C/text%3E%3C/svg%3E">
 
   <!-- Stylesheets with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=16.0">
+  <link rel="stylesheet" href="style.css?v=17.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
@@ -31,12 +31,13 @@
       </a>
 
       <ul class="nav-links" id="navLinks">
-        <li><a href="#friction">The Friction</a></li>
+        <li><a href="#friction">Friction</a></li>
         <li><a href="#founders">Founders</a></li>
         <li><a href="#business-model">Business Model</a></li>
-        <li><a href="#geography">Geography & Scale</a></li>
-        <li><a href="#status">Status Today</a></li>
-        <li><a href="#about-us">Meet the team</a></li>
+        <li><a href="#simulation">Simulation</a></li>
+        <li><a href="#geography">Geography</a></li>
+        <li><a href="#status">Status</a></li>
+        <li><a href="#about-us">Team</a></li>
         <li><a href="#references">References</a></li>
       </ul>
 
@@ -650,6 +651,159 @@
               <span class="client-service-tag">Enterprise PG</span>
               <span class="client-service-tag">Multi-currency PG</span>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== INTERACTIVE SIMULATION ======================== -->
+  <section id="simulation">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label"><i class="fa-solid fa-laptop-code"></i> Live Demo</span>
+        <h2 class="section-title">How Razorpay Works</h2>
+        <p class="section-subtitle">
+          Interact with the checkout terminal on the left to see how payment requests, 3D-Secure approvals, and split merchant settlements flow through Razorpay's network.
+        </p>
+      </div>
+
+      <div class="simulation-container reveal">
+        <!-- Left Column: Checkout Simulator Terminal -->
+        <div class="checkout-widget">
+          <div class="checkout-header">
+            <img src="logo-full.png" alt="Razorpay Logo" class="checkout-logo">
+            <span class="checkout-amount">₹1,299.00</span>
+          </div>
+          
+          <div class="checkout-tabs">
+            <button class="checkout-tab-btn active" data-method="card">
+              <i class="fa-solid fa-credit-card"></i> Card
+            </button>
+            <button class="checkout-tab-btn" data-method="upi">
+              <i class="fa-solid fa-mobile-screen-button"></i> UPI
+            </button>
+            <button class="checkout-tab-btn" data-method="nb">
+              <i class="fa-solid fa-building-columns"></i> Netbanking
+            </button>
+          </div>
+
+          <div class="checkout-content">
+            <!-- Card Panel -->
+            <div class="checkout-panel active" id="panel-card">
+              <div class="form-group">
+                <label for="card-num">Card Number</label>
+                <input type="text" id="card-num" class="form-input" placeholder="4312 8765 4321 0987" value="4312 8765 4321 0987">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="card-expiry">Expiry Date</label>
+                  <input type="text" id="card-expiry" class="form-input" placeholder="MM/YY" value="12/29">
+                </div>
+                <div class="form-group">
+                  <label for="card-cvv">CVV</label>
+                  <input type="password" id="card-cvv" class="form-input" placeholder="123" value="•••">
+                </div>
+              </div>
+              <button class="btn-pay" id="btn-pay-card">
+                Pay ₹1,299.00 <i class="fa-solid fa-lock"></i>
+              </button>
+            </div>
+
+            <!-- UPI Panel -->
+            <div class="checkout-panel" id="panel-upi">
+              <div class="form-group">
+                <label for="upi-vpa">UPI VPA Address</label>
+                <input type="text" id="upi-vpa" class="form-input" placeholder="username@upi" value="baidurja@okaxis">
+              </div>
+              <button class="btn-pay" id="btn-pay-upi">
+                Verify & Pay ₹1,299.00 <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <!-- Netbanking Panel -->
+            <div class="checkout-panel" id="panel-nb">
+              <div class="form-group">
+                <label>Select Your Bank</label>
+                <div class="nb-grid">
+                  <button class="nb-bank-btn active" data-bank="hdfc">HDFC Bank</button>
+                  <button class="nb-bank-btn" data-bank="sbi">State Bank of India</button>
+                  <button class="nb-bank-btn" data-bank="icici">ICICI Bank</button>
+                  <button class="nb-bank-btn" data-bank="axis">Axis Bank</button>
+                </div>
+              </div>
+              <button class="btn-pay" id="btn-pay-nb">
+                Proceed to Netbanking <i class="fa-solid fa-share-from-square"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- OTP Pop-up Modal (Card authentication) -->
+          <div class="otp-modal" id="otpModal">
+            <div class="otp-modal-content">
+              <h3 class="otp-modal-title">3D-Secure verification</h3>
+              <p class="otp-modal-text">Enter the 6-digit verification code sent to your registered mobile number: <strong>+91 ••••• ••890</strong></p>
+              <div class="form-group">
+                <input type="text" id="otp-input" class="form-input" placeholder="Enter OTP (e.g. 482934)" value="482934" style="text-align: center; letter-spacing: 0.25em; font-weight: 700; font-size: 1.1rem;">
+              </div>
+              <button class="btn-pay" id="btn-verify-otp" style="margin-top: 0.5rem; background: var(--accent-green);">
+                Confirm Payment <i class="fa-solid fa-check"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Success Screen Overlay -->
+          <div class="success-overlay" id="successOverlay">
+            <div class="success-icon-box">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 style="font-weight: 800; color: var(--rz-brand-navy); font-size: 1.25rem;">Payment Successful!</h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Transaction ID: pay_P8zKm29sJzL9w0</p>
+            <button class="btn-pay" id="btn-reset-sim" style="margin-top: 1rem; width: auto; padding: 0.5rem 1rem; font-size: 0.8rem; background: var(--text-muted);">
+              Run Another Demo <i class="fa-solid fa-rotate-left"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Flow Routing Visualizer -->
+        <div class="flow-visualizer">
+          <div class="flow-map">
+            <!-- Dynamic Connection Paths -->
+            <svg class="flow-connections-svg">
+              <path class="flow-line" id="line-customer-rzp" d="M 0 0 L 0 0" />
+              <path class="flow-line" id="line-rzp-gw" d="M 0 0 L 0 0" />
+              <path class="flow-line" id="line-gw-bank" d="M 0 0 L 0 0" />
+              <path class="flow-line" id="line-bank-merchant" d="M 0 0 L 0 0" />
+            </svg>
+
+            <!-- Interactive Nodes -->
+            <div class="flow-nodes">
+              <div class="flow-node" id="node-customer">
+                <div class="node-icon-box"><i class="fa-solid fa-cart-shopping"></i></div>
+                <span class="node-label">Checkout</span>
+              </div>
+              <div class="flow-node" id="node-rzp">
+                <div class="node-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
+                <span class="node-label">Razorpay API</span>
+              </div>
+              <div class="flow-node" id="node-gw">
+                <div class="node-icon-box"><i class="fa-solid fa-network-wired"></i></div>
+                <span class="node-label">Gateway</span>
+              </div>
+              <div class="flow-node" id="node-bank">
+                <div class="node-icon-box"><i class="fa-solid fa-building-columns"></i></div>
+                <span class="node-label">Acquirer</span>
+              </div>
+              <div class="flow-node" id="node-merchant">
+                <div class="node-icon-box"><i class="fa-solid fa-wallet"></i></div>
+                <span class="node-label">Settled</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transaction Logs Terminal Console -->
+          <div class="flow-logs-wrapper" id="flowLogs">
+            <div class="log-entry log-info">[SYSTEM] Simulation terminal online. Waiting for checkout initiation...</div>
           </div>
         </div>
       </div>
@@ -1298,6 +1452,6 @@
     <i class="fa-solid fa-arrow-up"></i>
   </button>
 
-  <script src="script.js?v=16.0"></script>
+  <script src="script.js?v=17.0"></script>
 </body>
 </html>
