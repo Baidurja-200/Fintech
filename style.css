@@ -1196,6 +1196,27 @@ section#geography.dark-bg .section-label {
   box-shadow: 0 4px 10px rgba(0,0,0,0.35);
 }
 
+/* Spacing adjustments for congested SEA region to prevent overlaps */
+.node-kl {
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.node-kl .node-label {
+  margin-top: 0;
+  margin-right: 8px;
+}
+
+.node-sg {
+  flex-direction: row;
+  align-items: center;
+}
+
+.node-sg .node-label {
+  margin-top: 0;
+  margin-left: 8px;
+}
+
 /* Active node styles */
 .map-node.active .node-point {
   background: var(--rz-blue-light);
