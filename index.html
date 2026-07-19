@@ -1274,23 +1274,101 @@
         </div>
       </div>
 
-      <!-- Timeline -->
-      <h3 class="section-title reveal" style="font-size: 1.5rem; margin-top: 4rem; color: #FFFFFF;">Milestone Timeline</h3>
-      <div class="timeline">
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2014</span><div class="timeline-content"><h4>Founded in Jaipur</h4><p>Harshil Mathur & Shashank Kumar pivot from a crowdfunding idea after experiencing India's payment infrastructure nightmare firsthand. Bootstrapped from a tin-roofed room.</p><div class="timeline-tags"><span class="timeline-tag">Founding</span></div></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2015</span><div class="timeline-content"><h4>Y Combinator W15 & Public Launch</h4><p>Accepted into YC's Winter 2015 batch — only the second India-focused startup selected. Launched at Demo Day. Series A ($9M) led by Tiger Global.</p><div class="timeline-tags"><span class="timeline-tag">YC W15</span><span class="timeline-tag">Series A</span></div></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2017</span><div class="timeline-content"><h4>Razorpay 2.0 — Multi-Product Suite</h4><p>Launched Subscriptions, Invoices, and Route. Became India's first UPI-led payment gateway, riding the wave of UPI adoption.</p><div class="timeline-tags"><span class="timeline-tag">Product Expansion</span><span class="timeline-tag">UPI</span></div></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2018</span><div class="timeline-content"><h4>RazorpayX & Capital Launch</h4><p>Launched RazorpayX (neo-banking) and Razorpay Capital (lending) at FTX event, marking the expansion beyond payments. Series B ($20M).</p><div class="timeline-tags"><span class="timeline-tag">Banking</span><span class="timeline-tag">Lending</span><span class="timeline-tag">Series B</span></div></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2019</span><div class="timeline-content"><h4>Series C & First Acquisitions</h4><p>Raised $75M (Series C). Acquired Thirdwatch (fraud detection) and Opfin (payroll), which became RazorpayX Payroll.</p><div class="timeline-tags"><span class="timeline-tag">Series C</span><span class="timeline-tag">M&A</span></div></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2020</span><div class="timeline-content"><h4>Unicorn Status 🦄</h4><p>Raised $100M (Series D) at $1B valuation — officially a unicorn. Launched RazorpayX Corporate Cards.</p><div class="timeline-tags"><span class="timeline-tag">Unicorn</span><span class="timeline-tag">Series D</span></div></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2021</span><div class="timeline-content"><h4>Peak Valuation — $7.5 Billion</h4><p>Raised $535M across Series E and F rounds. Peak valuation of $7.5B. Acquired TERA Finlabs (AI risk).</p><div class="timeline-tags"><span class="timeline-tag">$7.5B Valuation</span><span class="timeline-tag">Series E & F</span></div></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2022</span><div class="timeline-content"><h4>Acquisition Spree & International Expansion</h4><p>Acquired Curlec (Malaysia), Ezetap (POS), PoshVine (loyalty), and IZealiant Technologies (bank tech). Launched Magic Checkout.</p><div class="timeline-tags"><span class="timeline-tag">4 Acquisitions</span><span class="timeline-tag">Malaysia</span></div></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2023</span><div class="timeline-content"><h4>RBI PA License & Profitability Focus</h4><p>Received final RBI Payment Aggregator (Online) license. Shifted focus to profitability. Acquired Billme (digital invoicing). Launched Optimizer.</p><div class="timeline-tags"><span class="timeline-tag">RBI License</span><span class="timeline-tag">Profitability</span></div></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2024</span><div class="timeline-content"><h4>$150B+ TPV & AI Integration</h4><p>Surpassed $150B annualized TPV. Core online payments business achieves EBITDA-positive status. Launched Razorpay Ray (AI assistant).</p><div class="timeline-tags"><span class="timeline-tag">EBITDA Positive</span><span class="timeline-tag">AI</span></div></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2025</span><div class="timeline-content"><h4>Reverse Flip & Singapore Expansion</h4><p>Completed reverse flip to India (May 2025). Expanded to Singapore. Received PA-CB license (Dec). Revenue hit ₹3,783 crore in FY25 (65% YoY growth).</p><div class="timeline-tags"><span class="timeline-tag">Reverse Flip</span><span class="timeline-tag">Singapore</span><span class="timeline-tag">PA-CB</span></div></div></div>
-        <div class="timeline-item reveal"><div class="timeline-dot"></div><span class="timeline-year">2026</span><div class="timeline-content"><h4>IPO Filing & PA-P License</h4><p>Received PA-P license (Jan). Filed confidential DRHP with SEBI (June 12, 2026). Targeting IPO by end of 2026 at $5–6B valuation. Bankers: Axis Capital, Kotak, J.P. Morgan, Citi.</p><div class="timeline-tags"><span class="timeline-tag">IPO Filing</span><span class="timeline-tag">DRHP</span><span class="timeline-tag">PA-P License</span></div></div></div>
+      <!-- Milestone Interactive Time Machine -->
+      <h3 class="section-title reveal" style="font-size: 1.5rem; margin-top: 4rem; color: #FFFFFF;">Milestone Interactive Time Machine</h3>
+      
+      <div class="time-machine-container reveal">
+        <!-- Slider Controls -->
+        <div class="tm-controls-wrapper">
+          <div class="tm-slider-container">
+            <input type="range" id="tmSlider" min="0" max="11" value="11" class="tm-slider">
+            <div class="tm-slider-ticks" id="tmSliderTicks">
+              <span class="tm-tick" data-index="0">2014</span>
+              <span class="tm-tick" data-index="1">2015</span>
+              <span class="tm-tick" data-index="2">2017</span>
+              <span class="tm-tick" data-index="3">2018</span>
+              <span class="tm-tick" data-index="4">2019</span>
+              <span class="tm-tick" data-index="5">2020</span>
+              <span class="tm-tick" data-index="6">2021</span>
+              <span class="tm-tick" data-index="7">2022</span>
+              <span class="tm-tick" data-index="8">2023</span>
+              <span class="tm-tick" data-index="9">2024</span>
+              <span class="tm-tick" data-index="10">2025</span>
+              <span class="tm-tick active" data-index="11">2026</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Statistics Counter Panel -->
+        <div class="tm-stats-grid">
+          <div class="tm-stat-card">
+            <div class="tm-stat-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></div>
+            <div class="tm-stat-info">
+              <span class="tm-stat-label">Peak/Target Valuation</span>
+              <div class="tm-stat-value" id="tmValuation">$5.6B</div>
+            </div>
+          </div>
+          <div class="tm-stat-card">
+            <div class="tm-stat-icon"><i class="fa-solid fa-building-user"></i></div>
+            <div class="tm-stat-info">
+              <span class="tm-stat-label">Active Merchants</span>
+              <div class="tm-stat-value" id="tmMerchants">12.5M+</div>
+            </div>
+          </div>
+          <div class="tm-stat-card">
+            <div class="tm-stat-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div class="tm-stat-info">
+              <span class="tm-stat-label">Processing Speed</span>
+              <div class="tm-stat-value" id="tmSpeed">12,000 TPS</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Display Card Container for Active Milestone -->
+        <div class="tm-display-card" id="tmDisplayCard">
+          <div class="tm-display-header">
+            <span class="tm-display-year" id="tmDisplayYear">2026</span>
+            <h4 class="tm-display-title" id="tmDisplayTitle">IPO Filing & PA-P License</h4>
+          </div>
+          <p class="tm-display-desc" id="tmDisplayDesc">
+            Received PA-P license (Jan). Filed confidential DRHP with SEBI (June 12, 2026). Targeting IPO by end of 2026 at $5-6B valuation. Bankers: Axis Capital, Kotak, J.P. Morgan, Citi.
+          </p>
+          <div class="tm-display-tags" id="tmDisplayTags">
+            <span class="timeline-tag">IPO Filing</span>
+            <span class="timeline-tag">DRHP</span>
+            <span class="timeline-tag">PA-P License</span>
+          </div>
+        </div>
+
+        <!-- Growth Graph Plot -->
+        <div class="tm-graph-container">
+          <div class="tm-graph-header">
+            <span><i class="fa-solid fa-chart-area"></i> Valuation & TPV Growth Trajectory</span>
+          </div>
+          <div class="tm-graph-body">
+            <svg class="tm-svg-graph" viewBox="0 0 500 120" preserveAspectRatio="none">
+              <defs>
+                <filter id="tmGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="blur"></feGaussianBlur>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
+                </filter>
+                <linearGradient id="tmLineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#3B93FC"></stop>
+                  <stop offset="100%" stop-color="#0B72E7"></stop>
+                </linearGradient>
+              </defs>
+              <line x1="20" y1="20" x2="480" y2="20" stroke="rgba(255, 255, 255, 0.05)" stroke-dasharray="2,2"></line>
+              <line x1="20" y1="60" x2="480" y2="60" stroke="rgba(255, 255, 255, 0.05)" stroke-dasharray="2,2"></line>
+              <line x1="20" y1="100" x2="480" y2="100" stroke="rgba(255, 255, 255, 0.05)" stroke-dasharray="2,2"></line>
+              
+              <path class="tm-graph-bg-path" d="M 20 100 L 61.8 98 L 103.6 92 L 145.5 88 L 187.3 83 L 229.1 75 L 270.9 20 L 312.7 20 L 354.5 20 L 396.4 22 L 438.2 29 L 480 32" fill="none" stroke="rgba(255, 255, 255, 0.15)" stroke-width="2" stroke-dasharray="3,3"></path>
+              <path id="tmActivePath" d="M 20 100" fill="none" stroke="url(#tmLineGrad)" stroke-width="3" stroke-linecap="round"></path>
+              <circle id="tmCursor" cx="20" cy="100" r="5" fill="#0B72E7" stroke="#FFFFFF" stroke-width="2" filter="url(#tmGlow)"></circle>
+            </svg>
+          </div>
+        </div>
       </div>
-    </div>
+
   </section>
 
   <!-- ======================== STATUS TODAY ======================== -->

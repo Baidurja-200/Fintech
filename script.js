@@ -604,6 +604,249 @@ function initializeProfilePage() {
     });
   }
 
+    // =====================================================
+  // INTERACTIVE TIME MACHINE SLIDER
+  // =====================================================
+  const timelineData = [
+    {
+      year: "2014",
+      title: "Founded in Jaipur",
+      description: "Harshil Mathur & Shashank Kumar pivot from a crowdfunding idea after experiencing India's payment infrastructure nightmare firsthand. Bootstrapped from a tin-roofed room.",
+      tags: ["Founding"],
+      stats: { valuation: 0, merchants: 10, tps: 1 }
+    },
+    {
+      year: "2015",
+      title: "Y Combinator W15 & Public Launch",
+      description: "Accepted into YC's Winter 2015 batch — only the second India-focused startup selected. Launched at Demo Day. Series A ($9M) led by Tiger Global.",
+      tags: ["YC W15", "Series A"],
+      stats: { valuation: 9000000, merchants: 1000, tps: 15 }
+    },
+    {
+      year: "2017",
+      title: "Razorpay 2.0 — Multi-Product Suite",
+      description: "Launched Subscriptions, Invoices, and Route. Became India's first UPI-led payment gateway, riding the wave of UPI adoption.",
+      tags: ["Product Expansion", "UPI"],
+      stats: { valuation: 100000000, merchants: 20000, tps: 150 }
+    },
+    {
+      year: "2018",
+      title: "RazorpayX & Capital Launch",
+      description: "Launched RazorpayX (neo-banking) and Razorpay Capital (lending) at FTX event, marking the expansion beyond payments. Series B ($20M).",
+      tags: ["Banking", "Lending", "Series B"],
+      stats: { valuation: 200000000, merchants: 100000, tps: 400 }
+    },
+    {
+      year: "2019",
+      title: "Series C & First Acquisitions",
+      description: "Raised $75M (Series C). Acquired Thirdwatch (fraud detection) and Opfin (payroll), which became RazorpayX Payroll.",
+      tags: ["Series C", "M&A"],
+      stats: { valuation: 450000000, merchants: 350000, tps: 800 }
+    },
+    {
+      year: "2020",
+      title: "Unicorn Status 🦄",
+      description: "Raised $100M (Series D) at $1B valuation — officially a unicorn. Launched RazorpayX Corporate Cards.",
+      tags: ["Unicorn", "Series D"],
+      stats: { valuation: 1000000000, merchants: 1000000, tps: 1500 }
+    },
+    {
+      year: "2021",
+      title: "Peak Valuation 🚀 $7.5 Billion",
+      description: "Raised $535M across Series E and F rounds. Peak valuation of $7.5B. Acquired TERA Finlabs (AI risk).",
+      tags: ["$7.5B Valuation", "Series E & F"],
+      stats: { valuation: 7500000000, merchants: 5000000, tps: 3500 }
+    },
+    {
+      year: "2022",
+      title: "Acquisition Spree & International Expansion",
+      description: "Acquired Curlec (Malaysia), Ezetap (POS), PoshVine (loyalty), and IZealiant Technologies (bank tech). Launched Magic Checkout.",
+      tags: ["4 Acquisitions", "Malaysia"],
+      stats: { valuation: 7500000000, merchants: 8000000, tps: 5000 }
+    },
+    {
+      year: "2023",
+      title: "RBI PA License & Profitability Focus",
+      description: "Received final RBI Payment Aggregator (Online) license. Shifted focus to profitability. Acquired Billme (digital invoicing). Launched Optimizer.",
+      tags: ["RBI License", "Profitability"],
+      stats: { valuation: 7500000000, merchants: 10000000, tps: 7000 }
+    },
+    {
+      year: "2024",
+      title: "$150B+ TPV & AI Integration",
+      description: "Surpassed $150B annualized TPV. Core online payments business achieves EBITDA-positive status. Launched Razorpay Ray (AI assistant).",
+      tags: ["EBITDA Positive", "AI"],
+      stats: { valuation: 7200000000, merchants: 11000000, tps: 9000 }
+    },
+    {
+      year: "2025",
+      title: "Reverse Flip & Singapore Expansion",
+      description: "Completed reverse flip to India (May 2025). Expanded to Singapore. Received PA-CB license (Dec). Revenue hit ₹3,783 crore in FY25 (65% YoY growth).",
+      tags: ["Reverse Flip", "Singapore", "PA-CB"],
+      stats: { valuation: 6000000000, merchants: 12000000, tps: 11000 }
+    },
+    {
+      year: "2026",
+      title: "IPO Filing & PA-P License",
+      description: "Received PA-P license (Jan). Filed confidential DRHP with SEBI (June 12, 2026). Targeting IPO by end of 2026 at $5–6B valuation. Bankers: Axis Capital, Kotak, J.P. Morgan, Citi.",
+      tags: ["IPO Filing", "DRHP", "PA-P License"],
+      stats: { valuation: 5600000000, merchants: 12500000, tps: 12000 }
+    }
+  ];
+
+  const yCoords = [100, 98, 92, 88, 83, 75, 20, 20, 20, 22, 29, 32];
+  const stepX = (480 - 20) / 11; // 41.81
+
+  const tmSlider = document.getElementById('tmSlider');
+  const tmSliderTicks = document.querySelectorAll('#tmSliderTicks .tm-tick');
+  const tmValuation = document.getElementById('tmValuation');
+  const tmMerchants = document.getElementById('tmMerchants');
+  const tmSpeed = document.getElementById('tmSpeed');
+  const tmDisplayCard = document.getElementById('tmDisplayCard');
+  const tmDisplayYear = document.getElementById('tmDisplayYear');
+  const tmDisplayTitle = document.getElementById('tmDisplayTitle');
+  const tmDisplayDesc = document.getElementById('tmDisplayDesc');
+  const tmDisplayTags = document.getElementById('tmDisplayTags');
+  const tmActivePath = document.getElementById('tmActivePath');
+  const tmCursor = document.getElementById('tmCursor');
+
+  let prevStats = { valuation: 5600000000, merchants: 12500000, tps: 12000 };
+  let currentAnimationFrames = { valuation: null, merchants: null, tps: null };
+
+  function animateOdometer(element, key, startVal, endVal, isValuation, isMerchants) {
+    if (currentAnimationFrames[key]) {
+      cancelAnimationFrame(currentAnimationFrames[key]);
+    }
+
+    const duration = 500; // ms
+    let startTime = null;
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = progress * (2 - progress); // Ease out quad
+
+      const currentVal = Math.round(startVal + (endVal - startVal) * ease);
+
+      let displayText = "";
+      if (isValuation) {
+        if (currentVal === 0) displayText = "$0";
+        else if (currentVal >= 1000000000) {
+          displayText = "$" + (currentVal / 1000000000).toFixed(1) + "B";
+        } else {
+          displayText = "$" + (currentVal / 1000000).toFixed(0) + "M";
+        }
+      } else if (isMerchants) {
+        if (currentVal >= 1000000) {
+          displayText = (currentVal / 1000000).toFixed(currentVal >= 10000000 ? 0 : 1) + "M+";
+        } else if (currentVal >= 1000) {
+          displayText = (currentVal / 1000).toFixed(0) + "K";
+        } else {
+          displayText = currentVal.toString();
+        }
+      } else {
+        displayText = currentVal.toLocaleString('en-US') + " TPS";
+      }
+
+      element.textContent = displayText;
+
+      if (progress < 1) {
+        currentAnimationFrames[key] = requestAnimationFrame(step);
+      } else {
+        currentAnimationFrames[key] = null;
+      }
+    }
+
+    currentAnimationFrames[key] = requestAnimationFrame(step);
+  }
+
+  function updateTimeMachine(index, animate = true) {
+    const data = timelineData[index];
+    if (!data) return;
+
+    if (tmSlider && parseInt(tmSlider.value) !== index) {
+      tmSlider.value = index;
+    }
+
+    tmSliderTicks.forEach((tick, i) => {
+      tick.classList.toggle('active', i === index);
+    });
+
+    if (tmDisplayCard) {
+      tmDisplayCard.classList.add('morph-out');
+      
+      setTimeout(() => {
+        if (tmDisplayYear) tmDisplayYear.textContent = data.year;
+        if (tmDisplayTitle) tmDisplayTitle.textContent = data.title;
+        if (tmDisplayDesc) tmDisplayDesc.textContent = data.description;
+        
+        if (tmDisplayTags) {
+          tmDisplayTags.innerHTML = '';
+          data.tags.forEach(tag => {
+            const tagSpan = document.createElement('span');
+            tagSpan.className = 'timeline-tag';
+            tagSpan.textContent = tag;
+            tmDisplayTags.appendChild(tagSpan);
+          });
+        }
+        
+        tmDisplayCard.classList.remove('morph-out');
+      }, 200);
+    }
+
+    if (animate) {
+      if (tmValuation) animateOdometer(tmValuation, 'valuation', prevStats.valuation, data.stats.valuation, true, false);
+      if (tmMerchants) animateOdometer(tmMerchants, 'merchants', prevStats.merchants, data.stats.merchants, false, true);
+      if (tmSpeed) animateOdometer(tmSpeed, 'tps', prevStats.tps, data.stats.tps, false, false);
+    } else {
+      if (tmValuation) {
+        tmValuation.textContent = data.stats.valuation === 0 ? "$0" : 
+          (data.stats.valuation >= 1000000000 ? "$" + (data.stats.valuation/1000000000).toFixed(1) + "B" : "$" + (data.stats.valuation/1000000).toFixed(0) + "M");
+      }
+      if (tmMerchants) {
+        tmMerchants.textContent = data.stats.merchants >= 1000000 ? (data.stats.merchants/1000000).toFixed(data.stats.merchants >= 10000000 ? 0 : 1) + "M+" : data.stats.merchants;
+      }
+      if (tmSpeed) {
+        tmSpeed.textContent = data.stats.tps.toLocaleString() + " TPS";
+      }
+    }
+
+    prevStats = { ...data.stats };
+
+    if (tmActivePath) {
+      let pathD = "M 20 100";
+      for (let i = 1; i <= index; i++) {
+        const x = 20 + i * stepX;
+        const y = yCoords[i];
+        pathD += ` L ${x} ${y}`;
+      }
+      tmActivePath.setAttribute('d', pathD);
+    }
+
+    if (tmCursor) {
+      const activeX = 20 + index * stepX;
+      const activeY = yCoords[index];
+      tmCursor.setAttribute('cx', activeX);
+      tmCursor.setAttribute('cy', activeY);
+    }
+  }
+
+  updateTimeMachine(11, false);
+
+  if (tmSlider) {
+    tmSlider.addEventListener('input', (e) => {
+      updateTimeMachine(parseInt(e.target.value), true);
+    });
+  }
+
+  tmSliderTicks.forEach(tick => {
+    tick.addEventListener('click', () => {
+      const index = parseInt(tick.getAttribute('data-index'));
+      updateTimeMachine(index, true);
+    });
+  });
+
   // ─── DYNAMIC WORLD MAP SVG LOADER ───
   const mapHolder = document.getElementById('geoMapSvgHolder');
   if (mapHolder) {
