@@ -508,6 +508,101 @@
           </tbody>
         </table>
       </div>
+
+      <!-- Interactive Market Share Donut Chart -->
+      <h3 class="section-title reveal" style="font-size: 1.5rem; margin-top: 3.5rem;">Payment Gateway Market Share</h3>
+      
+      <div class="market-share-container reveal">
+        <div class="market-share-grid">
+          <!-- Left Column: Donut Chart SVG -->
+          <div class="chart-col">
+            <div class="donut-chart-wrapper">
+              <svg class="donut-chart-svg" viewBox="0 0 160 160">
+                <circle cx="80" cy="80" r="50" class="donut-ring-bg" />
+                
+                <!-- Slices calculated for radius r=50 (Circumference = 314.16) -->
+                <!-- Razorpay (55%): length 172.79, offset 0 -->
+                <circle cx="80" cy="80" r="50" class="donut-segment segment-razorpay" 
+                        data-competitor="razorpay"
+                        stroke-dasharray="172.79 314.16" stroke-dashoffset="0"
+                        transform="rotate(-90 80 80)" />
+                
+                <!-- PayU (15%): length 47.12, offset -172.79 -->
+                <circle cx="80" cy="80" r="50" class="donut-segment segment-payu" 
+                        data-competitor="payu"
+                        stroke-dasharray="47.12 314.16" stroke-dashoffset="-172.79"
+                        transform="rotate(-90 80 80)" />
+                
+                <!-- Cashfree (10%): length 31.42, offset -219.91 -->
+                <circle cx="80" cy="80" r="50" class="donut-segment segment-cashfree" 
+                        data-competitor="cashfree"
+                        stroke-dasharray="31.42 314.16" stroke-dashoffset="-219.91"
+                        transform="rotate(-90 80 80)" />
+                
+                <!-- Juspay (8%): length 25.13, offset -251.33 -->
+                <circle cx="80" cy="80" r="50" class="donut-segment segment-juspay" 
+                        data-competitor="juspay"
+                        stroke-dasharray="25.13 314.16" stroke-dashoffset="-251.33"
+                        transform="rotate(-90 80 80)" />
+                
+                <!-- Others (12%): length 37.70, offset -276.46 -->
+                <circle cx="80" cy="80" r="50" class="donut-segment segment-others" 
+                        data-competitor="others"
+                        stroke-dasharray="37.70 314.16" stroke-dashoffset="-276.46"
+                        transform="rotate(-90 80 80)" />
+              </svg>
+              
+              <div class="donut-center-text">
+                <span class="donut-center-value" id="donutVal">55%</span>
+                <span class="donut-center-label" id="donutLabel">Razorpay</span>
+                <span class="donut-center-role" id="donutRole">Market Leader</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Right Column: Interactive Details & Legends -->
+          <div class="legend-col">
+            <div class="competitor-details-card" id="competitorDetailsCard">
+              <h4 class="details-name" id="detailsName">Razorpay</h4>
+              <span class="details-badge" id="detailsBadge">Market Leader</span>
+              <p class="details-desc" id="detailsDesc">
+                Razorpay commands approximately 55% of India's online payment gateway market. It serves 80 of India's top 100 unicorns and handles millions of transactions daily across UPI, cards, and net banking.
+              </p>
+              <p class="details-extra" id="detailsExtra">
+                Dominates in UPI transactions and enterprise-grade recurring subscription mandates.
+              </p>
+            </div>
+            
+            <div class="market-share-legends">
+              <div class="legend-item active" data-competitor="razorpay">
+                <div class="legend-color-indicator" style="background-color: var(--rz-blue);"></div>
+                <span class="legend-competitor-name">Razorpay</span>
+                <span class="legend-percentage">55%</span>
+              </div>
+              <div class="legend-item" data-competitor="payu">
+                <div class="legend-color-indicator" style="background-color: #00b4d8;"></div>
+                <span class="legend-competitor-name">PayU India</span>
+                <span class="legend-percentage">15%</span>
+              </div>
+              <div class="legend-item" data-competitor="cashfree">
+                <div class="legend-color-indicator" style="background-color: var(--accent-purple);"></div>
+                <span class="legend-competitor-name">Cashfree</span>
+                <span class="legend-percentage">10%</span>
+              </div>
+              <div class="legend-item" data-competitor="juspay">
+                <div class="legend-color-indicator" style="background-color: var(--accent-amber);"></div>
+                <span class="legend-competitor-name">Juspay</span>
+                <span class="legend-percentage">8%</span>
+              </div>
+              <div class="legend-item" data-competitor="others">
+                <div class="legend-color-indicator" style="background-color: var(--text-muted);"></div>
+                <span class="legend-competitor-name">Others</span>
+                <span class="legend-percentage">12%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1368,7 +1463,7 @@
           </div>
         </div>
       </div>
-
+    </div>
   </section>
 
   <!-- ======================== STATUS TODAY ======================== -->

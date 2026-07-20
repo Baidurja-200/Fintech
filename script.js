@@ -880,6 +880,174 @@ function initializeProfilePage() {
       }
     }, 1000);
   }
+
+  // =====================================================
+  // INTERACTIVE MARKET SHARE DONUT CHART
+  // =====================================================
+  const marketShareData = {
+    razorpay: {
+      name: "Razorpay",
+      percentage: 55,
+      role: "Market Leader",
+      description: "Razorpay commands approximately 55% of India's online payment gateway market. It serves 80 of India's top 100 unicorns and handles millions of transactions daily across UPI, cards, and net banking.",
+      extra: "Dominates in UPI transactions and enterprise-grade recurring subscription mandates."
+    },
+    payu: {
+      name: "PayU India",
+      percentage: 15,
+      role: "Enterprise Challenger",
+      description: "PayU India holds a 15% market share, with a very strong footprint in enterprise payment processing, travel, and large-scale e-commerce segments.",
+      extra: "Backed by global internet group Prosus; processes payments for major online services."
+    },
+    cashfree: {
+      name: "Cashfree",
+      percentage: 10,
+      role: "Payout Specialist",
+      description: "Cashfree accounts for 10% of the market. It is highly regarded for its automated vendor payouts, cashouts API, instant settlements, and subscription billing options.",
+      extra: "Backed by Y Combinator and State Bank of India (SBI)."
+    },
+    juspay: {
+      name: "Juspay",
+      percentage: 8,
+      role: "Orchestration & UPI Infra",
+      description: "Juspay holds an 8% market share, powering the technical SDK infrastructure behind many massive consumer apps and offering payment orchestration capabilities.",
+      extra: "Processes a significant chunk of India's UPI payments on its core router."
+    },
+    others: {
+      name: "Others",
+      percentage: 12,
+      role: "Niche & Regional Players",
+      description: "The remaining 12% of the market is distributed among niche processors, direct bank integrations, international gateways, and smaller local payment processors.",
+      extra: "Includes gateways like CCAvenue, Paytm, Paytm PG, and direct netbanking integrations."
+    }
+  };
+
+  const donutVal = document.getElementById('donutVal');
+  const donutLabel = document.getElementById('donutLabel');
+  const donutRole = document.getElementById('donutRole');
+  
+  const detailsName = document.getElementById('detailsName');
+  const detailsBadge = document.getElementById('detailsBadge');
+  const detailsDesc = document.getElementById('detailsDesc');
+  const detailsExtra = document.getElementById('detailsExtra');
+  
+  const donutSegments = document.querySelectorAll('.donut-segment');
+  const legendItems = document.querySelectorAll('.legend-item');
+  
+  let currentActiveCompetitor = 'razorpay';
+  let donutAnimFrame = null;
+
+  function animateDonutPercent(targetPercent) {
+    if (donutAnimFrame) cancelAnimationFrame(donutAnimFrame);
+    if (!donutVal) return;
+    
+    const startVal = parseInt(donutVal.textContent) || 0;
+    const endVal = targetPercent;
+    const duration = 300; // ms
+    const startTime = performance.now();
+    
+    function step(timestamp) {
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = progress * (2 - progress); // Ease out quad
+      const val = Math.round(startVal + (endVal - startVal) * eased);
+      donutVal.textContent = val + "%";
+      
+      if (progress < 1) {
+        donutAnimFrame = requestAnimationFrame(step);
+      }
+    }
+    donutAnimFrame = requestAnimationFrame(step);
+  }
+
+  function updateDonutDisplay(competitorId, animate = true) {
+    const data = marketShareData[competitorId];
+    if (!data) return;
+
+    // Update center values
+    if (animate) {
+      animateDonutPercent(data.percentage);
+    } else if (donutVal) {
+      donutVal.textContent = data.percentage + "%";
+    }
+    
+    if (donutLabel) donutLabel.textContent = data.name;
+    if (donutRole) donutRole.textContent = data.role;
+
+    // Update details card
+    if (detailsName) detailsName.textContent = data.name;
+    if (detailsBadge) {
+      detailsBadge.textContent = data.role;
+      // Change color based on selection to fit the theme color
+      let color = 'var(--rz-blue)';
+      if (competitorId === 'payu') color = '#00b4d8';
+      else if (competitorId === 'cashfree') color = 'var(--accent-purple)';
+      else if (competitorId === 'juspay') color = 'var(--accent-amber)';
+      else if (competitorId === 'others') color = 'var(--text-muted)';
+      detailsBadge.style.color = color;
+      detailsBadge.style.background = `rgba(${parseInt(color.slice(1,3), 16) || 11}, ${parseInt(color.slice(3,5), 16) || 114}, ${parseInt(color.slice(5,7), 16) || 231}, 0.08)`;
+    }
+    if (detailsDesc) detailsDesc.textContent = data.description;
+    if (detailsExtra) {
+      detailsExtra.textContent = data.extra;
+      let color = 'var(--rz-blue)';
+      if (competitorId === 'payu') color = '#00b4d8';
+      else if (competitorId === 'cashfree') color = 'var(--accent-purple)';
+      else if (competitorId === 'juspay') color = 'var(--accent-amber)';
+      else if (competitorId === 'others') color = 'var(--text-muted)';
+      detailsExtra.style.borderLeftColor = color;
+    }
+
+    // Toggle active segment classes
+    donutSegments.forEach(segment => {
+      const isMatch = segment.dataset.competitor === competitorId;
+      segment.classList.toggle('active', isMatch);
+    });
+
+    // Toggle active legend classes
+    legendItems.forEach(item => {
+      const isMatch = item.dataset.competitor === competitorId;
+      item.classList.toggle('active', isMatch);
+    });
+  }
+
+  // Bind mouse and click events
+  donutSegments.forEach(segment => {
+    const compId = segment.dataset.competitor;
+    
+    segment.addEventListener('mouseenter', () => {
+      updateDonutDisplay(compId, true);
+    });
+    
+    segment.addEventListener('mouseleave', () => {
+      updateDonutDisplay(currentActiveCompetitor, true);
+    });
+
+    segment.addEventListener('click', () => {
+      currentActiveCompetitor = compId;
+      updateDonutDisplay(compId, true);
+    });
+  });
+
+  legendItems.forEach(item => {
+    const compId = item.dataset.competitor;
+    
+    item.addEventListener('mouseenter', () => {
+      updateDonutDisplay(compId, true);
+    });
+    
+    item.addEventListener('mouseleave', () => {
+      updateDonutDisplay(currentActiveCompetitor, true);
+    });
+
+    item.addEventListener('click', () => {
+      currentActiveCompetitor = compId;
+      updateDonutDisplay(compId, true);
+    });
+  });
+
+  // Initial display run (forces correct rendering on page load)
+  updateDonutDisplay('razorpay', false);
 }
 
 if (document.readyState === 'loading') {

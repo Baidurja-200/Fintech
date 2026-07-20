@@ -970,6 +970,209 @@ section:nth-child(even) {
   font-weight: 600;
 }
 
+/* --- Interactive Market Share Donut Chart --- */
+.market-share-container {
+  margin-top: var(--space-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-base);
+}
+
+.market-share-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.chart-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.donut-chart-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.donut-chart-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.donut-ring-bg {
+  fill: none;
+  stroke: var(--bg-secondary);
+  stroke-width: 12;
+}
+
+.donut-segment {
+  fill: none;
+  stroke-width: 12;
+  cursor: pointer;
+  transition: stroke-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease, filter 0.3s ease;
+}
+
+.donut-segment:hover,
+.donut-segment.active {
+  stroke-width: 15;
+  filter: drop-shadow(0 0 6px rgba(11, 114, 231, 0.25));
+}
+
+.segment-razorpay { stroke: var(--rz-blue); }
+.segment-payu { stroke: #00b4d8; }
+.segment-cashfree { stroke: var(--accent-purple); }
+.segment-juspay { stroke: var(--accent-amber); }
+.segment-others { stroke: var(--text-muted); }
+
+.donut-center-text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+  width: 60%;
+}
+
+.donut-center-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.1;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.donut-center-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.donut-center-role {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.legend-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.competitor-details-card {
+  background: var(--bg-secondary);
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.details-name {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.15rem;
+}
+
+.details-badge {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.65rem;
+  border-radius: var(--radius-full);
+  background: rgba(11, 114, 231, 0.08);
+  color: var(--rz-blue);
+  margin-bottom: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.details-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.details-extra {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+  border-left: 2px solid var(--rz-blue);
+  padding-left: 8px;
+}
+
+.market-share-legends {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.5rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--bg-card);
+}
+
+.legend-item:hover,
+.legend-item.active {
+  background: var(--bg-secondary);
+  border-color: var(--rz-blue-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.legend-item.active {
+  border-color: var(--rz-blue);
+  background: rgba(11, 114, 231, 0.03);
+}
+
+.legend-color-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-competitor-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex-grow: 1;
+}
+
+.legend-percentage {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
 /* =====================================================
    GEOGRAPHY CONSOLE & INTERACTIVE HUB SELECTOR
    ===================================================== */
@@ -3103,6 +3306,37 @@ footer {
 @keyframes popScale {
   0% { transform: scale(0); }
   100% { transform: scale(1); }
+}
+
+/* Media Queries for Market Share Donut Chart */
+@media (max-width: 768px) {
+  .market-share-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .donut-chart-wrapper {
+    max-width: 240px;
+    margin: 0 auto;
+  }
+
+  .market-share-legends {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .donut-center-value {
+    font-size: 1.8rem;
+  }
+
+  .competitor-details-card {
+    padding: var(--space-sm);
+  }
+
+  .market-share-legends {
+    grid-template-columns: 1fr;
+  }
 }
 
 
